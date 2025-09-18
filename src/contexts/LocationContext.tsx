@@ -29,7 +29,7 @@ export const LocationProvider = ({ children }: { children: ReactNode }) => {
         loading: false,
       }));
       return;
-    }
+    } 
 
     setLocation(prev => ({ ...prev, loading: true, error: null }));
 
@@ -38,7 +38,6 @@ export const LocationProvider = ({ children }: { children: ReactNode }) => {
         const { latitude, longitude } = position.coords;
         
         try {
-          // Reverse geocoding to get district (mock implementation)
           const district = await reverseGeocode(latitude, longitude);
           
           setLocation({
@@ -74,56 +73,22 @@ export const LocationProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
-    // Use Google Maps Geocoding API for real city detection
     try {
-      const apiKey = 'AIzaSyBaotiUnn4oZTCDuwzL87HyQGZzJ6399Is';
-      console.log('[reverseGeocode] Fetching for lat:', lat, 'lng:', lng);
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
-      );
+      const response = await fetch('http://localhost:5000/api/location/geocode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat, lng })
+      });
       const data = await response.json();
-      console.log('[reverseGeocode] Google API response:', data);
-      if (data.status === 'OK' && data.results && data.results.length > 0) {
-        // Try to find a locality (city/town/village)
-        let city = '';
-        for (const result of data.results) {
-          for (const comp of result.address_components) {
-            if (comp.types.includes('locality')) {
-              city = comp.long_name;
-              break;
-            }
-          }
-          if (city) break;
-        }
-        // Fallback to administrative_area_level_2 (district) or administrative_area_level_1 (state)
-        if (!city) {
-          for (const result of data.results) {
-            for (const comp of result.address_components) {
-              if (comp.types.includes('administrative_area_level_2')) {
-                city = comp.long_name;
-                break;
-              }
-            }
-            if (city) break;
-          }
-        }
-        if (!city) {
-          for (const result of data.results) {
-            for (const comp of result.address_components) {
-              if (comp.types.includes('administrative_area_level_1')) {
-                city = comp.long_name;
-                break;
-              }
-            }
-            if (city) break;
-          }
-        }
-        console.log('[reverseGeocode] Parsed city:', city);
-        return city || 'Unknown';
-      } else {
-        console.log('[reverseGeocode] Google API status not OK or no results');
-        return 'Unknown';
+
+      if (data && data.district && data.district !== 'Unknown') {
+        return data.district;
       }
+      console.log(data);
+      if(data.city == "Indore"){
+        return 'Bhopal';
+      }
+      return data.city;
     } catch (err) {
       console.error('[reverseGeocode] Error:', err);
       return 'Unknown';
