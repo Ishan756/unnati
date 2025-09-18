@@ -25,36 +25,10 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Links */}
-        <ul className="flex space-x-8 text-lg font-medium">
-          {navItems.map((item) => (
-            <li key={item.path}>
-              <Link
-                to={item.path}
-                className="relative group transition-colors duration-300"
-              >
-                {item.label}
-                {/* Underline hover effect */}
-                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-teal-400 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      
 
         {/* Buttons */}
-        <div className="flex space-x-4 text-lg font-semibold">
-          <Link
-            to="/login"
-            className="px-5 py-2 rounded-lg bg-teal-500 hover:bg-teal-600 shadow-md transition duration-300"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="px-5 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 shadow-md transition duration-300"
-          >
-            Register
-          </Link>
-        </div>
+       
       </div>
     </nav>
   );

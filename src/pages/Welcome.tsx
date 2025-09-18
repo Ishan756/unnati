@@ -48,9 +48,8 @@ const Welcome: React.FC = () => {
 
   return (
     <>
-      <div className="h-screen bg-gradient-to-tr from-gray-900 to-gray-800 text-gray-100 flex flex-col items-center  px-6">
+      <div className="min-h-screen bg-gradient-to-tr from-gray-900 to-gray-800 text-gray-100 flex flex-col items-center px-6 pb-10">
         {/* Top Controls */}
-
         <div className=''><Navbar /></div>
 
         <div className="w-full my-6 flex justify-between max-w-7xl items-center py-4">
@@ -121,24 +120,31 @@ const Welcome: React.FC = () => {
         )}
 
         {/* CTA Button */}
-        <Link
-          to="/onboarding"
-          className="mt-10 px-8 py-4 bg-teal-400 text-gray-900 rounded-xl text-lg font-semibold shadow-lg hover:bg-teal-500 transition-colors"
-        >
-          {language === 'en' && 'Get Started'}
-          {language === 'hi' && 'शुरू करें'}
-          {language === 'ta' && 'தொடங்குங்கள்'}
-          {language === 'te' && 'ప్రారంభించండి'}
-        </Link>
-
-
+        <div className="flex justify-center mt-10 mb-4 w-full">
+          <Link
+            to="/onboarding"
+            className="px-8 py-4 bg-teal-400 text-gray-900 rounded-xl text-lg font-semibold shadow-lg hover:bg-teal-500 transition-colors"
+            style={{ zIndex: 10 }}
+          >
+            {language === 'en' && 'Get Started'}
+            {language === 'hi' && 'शुरू करें'}
+            {language === 'ta' && 'தொடங்குங்கள்'}
+            {language === 'te' && 'ప్రారంభించండి'}
+          </Link>
+        </div>
       </div>
 
+      {/* Add extra spacing to ensure no overlap with below sections */}
+      <div className="mt-8" />
       <div>
         <Work />
       </div>
-      <div><Choose /></div>
-      <div><Companies /></div>
+      <div className="mt-8">
+        <Choose />
+      </div>
+      <div className="mt-8">
+        <Companies />
+      </div>
     </>
   );
 };
